@@ -26,7 +26,7 @@ public class BattleField : MonoBehaviour
                 }
                 else if (i == 4 && j == 2)
                 {
-                    newCell.GetComponent<Cell>().team = 2;
+                    newCell.GetComponent<Cell>().team = -1;
                 }
                 else
                 {

@@ -7,7 +7,7 @@ public class Cell : MonoBehaviour
 {
     int x, y;
     public int team;
-    Figure figure;
+    public Figure figure;// private set
     public bool isActive;
 
     public void SetCoordinates(int x,int y)
@@ -32,13 +32,29 @@ public class Cell : MonoBehaviour
             figure.GetComponent<Figure>().OnSelected += Cell_OnSelected;
         }
     }
-
-    public delegate void InfoForTurnManager(Card card, int x, int y);
+    public int GetFigureTeam()
+    {
+        if (figure == null)
+            return 0;
+        if (figure.team == 1)
+        {
+            return 1;
+        }
+        else if(figure.team == -1)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    public delegate void InfoForTurnManager(Card card, int x, int y, int t);
     public event InfoForTurnManager OnSelected;
-    private void Cell_OnSelected(Card card)
+    public void Cell_OnSelected(Card card)
     {
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/fieldHighlighted");
-        OnSelected(card, x, y);
+        OnSelected(card, x, y, figure.team);
     }
 }
 

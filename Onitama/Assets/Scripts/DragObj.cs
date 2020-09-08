@@ -4,48 +4,83 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IDropHandler, IEndDragHandler
+public class DragObj : MonoBehaviour
 {
+    [SerializeField]
+    int team;
     string cardName;
-    public Card card;
-    Vector2 pos;
-    Vector3 delta;
+    [SerializeField]
+    LayerMask layerMask;
+    
+    public Card card; // half-private
+    Vector3 pos, startPos, delta;
+    bool isDragging;
+    public void WasUsed(Vector3 pos)
+    {
+        transform.position = pos;
+        GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
+        team *= -1;
+    }
+    public void SetCard(Card c)
+    {
+        card = c;
+        try
+        {
+            GetComponent<SpriteRenderer>().sprite = c.sprite;
+        }
+        finally
+        {
+
+        }
+    }
     private void Start()
     {
-       GetComponent<Image>().sprite = card.sprite;
+       startPos = transform.position;
+       isDragging = false;
     }
-    public void OnBeginDrag(PointerEventData eventData)
+
+
+
+    public void OnMouseDown()
     {
-        pos = eventData.position;
+        pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
         transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        isDragging = true;
+        GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 0.5f);
     }
-
-    public void OnDrag(PointerEventData eventData)
+    private void Update()
     {
-        transform.position += new Vector3(eventData.delta.x, eventData.delta.y, 0);
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        RaycastHit hit;
-        
-        if (Physics.Raycast(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, 0)), out hit))
+        if (isDragging)
         {
-            Debug.Log("AAAAAA");
-            if (hit.collider.CompareTag("Figure"))
+            delta = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0)) - pos;
+            transform.position += delta;
+            pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+        }
+    }
+
+    IEnumerator CardMoveBack()
+    {
+        yield return new WaitForSeconds(0.1f);
+        transform.position = startPos;
+    }
+    public void OnMouseUp()
+    {
+        GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 1f);
+        StartCoroutine(CardMoveBack());
+        isDragging = false;
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + transform.forward , transform.forward, 3f, layerMask);
+        if (hit2.collider != null)
+        {
+            if (hit2.collider.CompareTag("Figure"))
             {
-                if (card.team == hit.collider.gameObject.GetComponent<Figure>().team)
+                Debug.LogWarning("FIGURE");
+                if (team == hit2.collider.gameObject.GetComponent<Figure>().team)
                 {
-                    hit.collider.gameObject.GetComponent<Figure>().Select(card);
+                    hit2.collider.gameObject.GetComponent<Figure>().Select(card);
                 }
             }
         }
-        transform.localScale = new Vector3(1f,1f,1f);
 
+        transform.localScale = new Vector3(1f,1f,1f);
     }
 }

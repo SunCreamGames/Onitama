@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873169de56befec4bb4e1f377bd68484, type: 3}
   m_Name: Ox
   m_EditorClassIdentifier: 
+  moves:
+  - 0 1
+  - 0 -1
+  - 1 0
   sprite: {fileID: 21300000, guid: 179b66d66a8b21f498e0810ffaddc799, type: 3}
   isActive: 0
-  team: 0

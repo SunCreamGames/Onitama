@@ -4,8 +4,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Card : ScriptableObject
 {
-    public List<int[]> moves { private set; get; }
+    public List<string> moves;
     public Sprite sprite;
     public bool isActive;
-    public int team;
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,15 @@ public class TurnManager : MonoBehaviour
     [SerializeField]
     BattleField field;
     Card card;
+    Figure figure;
     [SerializeField]
-    Sprite targetRed, targetBlue;
-    List<GameObject> targets;
+    LayerMask lMask;
     int teamTurn;
+    public delegate void MyDelegate(int t, Card c);
+    public event MyDelegate OnTurnEnd;
     private void Start()
     {
+        teamTurn = 1;
         for (int i = 0; i < field.Cells.GetLength(0); i++)
         {
             for (int j = 0; j < field.Cells.GetLength(1); j++)
@@ -32,22 +36,74 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    private void TurnManager_OnSelected(Card card, int x, int y)
+    private void TurnManager_OnSelected(Card card, int x, int y, int team)
     {
+        this.card = card;
+        figure = field.Cells[x, y].figure;
         for (int i = 0; i < field.Cells.GetLength(0); i++)
         {
             for (int j = 0; j < field.Cells.GetLength(1); j++)
             {
                 field.Cells[i, j].isActive = false;
+                if(!(x==i && y ==j))
+                field.Cells[i, j].gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/field");
             }
         }
-        foreach (int[] move in card.moves)
+        foreach (string move in card.moves)
         {
-            if (field.Cells[x + move[0], y + move[1]] != null)
+            int a = Convert.ToInt32(move.Split(' ')[0]) * team;
+            int b = Convert.ToInt32(move.Split(' ')[1]) * team;
+            
+            if (0 <= x + b && x + b < 5 && y + a >= 0 && y + a < 5)
             {
-                field.Cells[x + move[0], y + move[1]].isActive = true;
-                Vector3 pos = field.Cells[x + move[0], y + move[1]].transform.position;
-                Instantiate((teamTurn == 1) ? targetRed : targetBlue, pos, Quaternion.identity, null);
+
+                if (field.Cells[x + b, y + a].GetFigureTeam() == team)
+                {
+
+                }
+                else if (field.Cells[x + b, y + a].GetFigureTeam() == -team)
+                {
+                    field.Cells[x + b, y + a].isActive = true;
+                    field.Cells[x + b, y + a].gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/fieldAttack");
+                }
+                else
+                {
+                    field.Cells[x + b, y + a].isActive = true;
+                    field.Cells[x + b, y + a].gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/fieldActive");
+                }
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit2D hit2D = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.forward, lMask);
+            if (hit2D.collider != null)
+            {
+                if (hit2D.collider.GetComponent<Cell>() != null && hit2D.collider.GetComponent<Cell>().isActive)
+                {
+                    foreach (Cell cell in field.Cells)
+                    {
+                        if (cell.figure == figure)
+                        {
+                            cell.figure.OnSelected -= cell.Cell_OnSelected;
+                            cell.figure = null;
+                        }
+                    }
+                    hit2D.collider.GetComponent<Cell>().SetFigure(figure);
+                    for (int i = 0; i < field.Cells.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < field.Cells.GetLength(1); j++)
+                        {
+                            field.Cells[i, j].isActive = false;
+                            field.Cells[i, j].gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/field");
+                        }
+                    }
+                    OnTurnEnd(teamTurn, card);
+                    // ОБРАБОТКА 5 АПДЕЙТОВ ИДЕТ!
+                }
             }
         }
     }
