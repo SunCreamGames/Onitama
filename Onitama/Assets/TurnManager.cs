@@ -10,11 +10,12 @@ public class TurnManager : MonoBehaviour
     [SerializeField]
     BattleField field;
     Card card;
+    DragObj dragObj;
     Figure figure;
     [SerializeField]
     LayerMask lMask;
     int teamTurn;
-    public delegate void MyDelegate(int t, Card c);
+    public delegate void MyDelegate(int t, Card c, DragObj dragObj);
     public event MyDelegate OnTurnEnd;
     private void Start()
     {
@@ -36,9 +37,10 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    private void TurnManager_OnSelected(Card card, int x, int y, int team)
+    private void TurnManager_OnSelected(DragObj card, int x, int y, int team)
     {
-        this.card = card;
+        dragObj = card;
+        this.card = card.card;
         figure = field.Cells[x, y].figure;
         for (int i = 0; i < field.Cells.GetLength(0); i++)
         {
@@ -49,7 +51,7 @@ public class TurnManager : MonoBehaviour
                 field.Cells[i, j].gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/field");
             }
         }
-        foreach (string move in card.moves)
+        foreach (string move in card.card.moves)
         {
             int a = Convert.ToInt32(move.Split(' ')[0]) * team;
             int b = Convert.ToInt32(move.Split(' ')[1]) * team;
@@ -101,8 +103,8 @@ public class TurnManager : MonoBehaviour
                             field.Cells[i, j].gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/field");
                         }
                     }
-                    OnTurnEnd(teamTurn, card);
-                    // ОБРАБОТКА 5 АПДЕЙТОВ ИДЕТ!
+                    OnTurnEnd(teamTurn, card, dragObj);
+                    dragObj.Reset();
                 }
             }
         }

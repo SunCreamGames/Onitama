@@ -49,9 +49,9 @@ public class Cell : MonoBehaviour
             return 0;
         }
     }
-    public delegate void InfoForTurnManager(Card card, int x, int y, int t);
+    public delegate void InfoForTurnManager(DragObj card, int x, int y, int t);
     public event InfoForTurnManager OnSelected;
-    public void Cell_OnSelected(Card card)
+    public void Cell_OnSelected(DragObj card)
     {
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/fieldHighlighted");
         OnSelected(card, x, y, figure.team);

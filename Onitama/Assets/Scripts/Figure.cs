@@ -6,10 +6,10 @@ public class Figure : MonoBehaviour
 {
     public bool IsMaster;
     public int team;
-    public delegate void Selection(Card card);
+    public delegate void Selection(DragObj card);
     public event Selection OnSelected;
 
-    public void Select(Card card)
+    public void Select(DragObj card)
     {
         OnSelected(card);
     }

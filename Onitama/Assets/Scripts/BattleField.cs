@@ -17,7 +17,7 @@ public class BattleField : MonoBehaviour
         {
             for (int j = 0; j < 5; j++)
             {
-                  Cell newCell = Instantiate(cell, transform);
+                Cell newCell = Instantiate(cell, transform);
                 Cells[i, j] = newCell;
                 newCell.transform.position = new Vector3(-4 + 2 * j, -4 + 2 * i, 0);
                 if (i == 0 && j == 2)
@@ -32,8 +32,9 @@ public class BattleField : MonoBehaviour
                 {
                     newCell.GetComponent<Cell>().team = 0;
                 }
-                    newCell.GetComponent<Cell>().SetCoordinates(i,j);
-              
+                newCell.GetComponent<Cell>().SetCoordinates(i, j);
+                newCell.gameObject.layer = 10;
+
             }
         }
     }

@@ -35,6 +35,10 @@ public class DragObj : MonoBehaviour
     }
     private void Start()
     {
+        Reset();
+    }
+    public void Reset()
+    {
        startPos = transform.position;
        isDragging = false;
     }
@@ -61,22 +65,26 @@ public class DragObj : MonoBehaviour
     IEnumerator CardMoveBack()
     {
         yield return new WaitForSeconds(0.1f);
+        Debug.Log(startPos.x + "  " + startPos.y + "  " + startPos.z);
         transform.position = startPos;
     }
     public void OnMouseUp()
     {
+
         GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 1f);
         StartCoroutine(CardMoveBack());
         isDragging = false;
         RaycastHit2D hit2 = Physics2D.Raycast(transform.position + transform.forward , transform.forward, 3f, layerMask);
         if (hit2.collider != null)
         {
-            if (hit2.collider.CompareTag("Figure"))
+            if (hit2.collider.gameObject.GetComponent<Cell>()!=null)
             {
-                Debug.LogWarning("FIGURE");
-                if (team == hit2.collider.gameObject.GetComponent<Figure>().team)
+                if (hit2.collider.gameObject.GetComponent<Cell>().figure != null)
                 {
-                    hit2.collider.gameObject.GetComponent<Figure>().Select(card);
+                    if (team == hit2.collider.gameObject.GetComponent<Cell>().figure.team)
+                    {
+                        hit2.collider.gameObject.GetComponent<Cell>().figure.Select(this);
+                    }
                 }
             }
         }
