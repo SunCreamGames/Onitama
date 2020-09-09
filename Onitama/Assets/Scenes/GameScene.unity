@@ -1182,7 +1182,7 @@ SpriteRenderer:
   m_SortingOrder: 5
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 2.8444445, y: 2.8444445}
@@ -1707,7 +1707,7 @@ SpriteRenderer:
   m_SortingOrder: 5
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 2.8444445, y: 2.8444445}
@@ -1949,10 +1949,20 @@ MonoBehaviour:
   cards:
   - {fileID: 11400000, guid: eeb86ba276f08e0489524793d29273f3, type: 2}
   - {fileID: 11400000, guid: c28fd7f7a3e177f44ba07623b6a2e1cc, type: 2}
+  - {fileID: 11400000, guid: 7d33b3f44fc39bb44933f9ed903bd578, type: 2}
+  - {fileID: 11400000, guid: 811b29bbd44977a4d87c22aa33563a73, type: 2}
   - {fileID: 11400000, guid: 1096bb2113ea6f448a014f11bb730338, type: 2}
+  - {fileID: 11400000, guid: d898453720614014d85f8f4c5930c08a, type: 2}
+  - {fileID: 11400000, guid: 9b0a6626310283143821ddbebd6e23a3, type: 2}
+  - {fileID: 11400000, guid: 964cfb23a15dd97428fba814f6e9affa, type: 2}
+  - {fileID: 11400000, guid: 96a306eb28b990a4faf0e42f7f46172d, type: 2}
+  - {fileID: 11400000, guid: ff6aac300f4c95542b107e31ae457e39, type: 2}
   - {fileID: 11400000, guid: 776c2678b7a4b4a479966329e6ec629d, type: 2}
   - {fileID: 11400000, guid: 66a36d5e27a1ab74fa42ec72f9e78820, type: 2}
   - {fileID: 11400000, guid: dae5c78bf970fad45b18bec957505d31, type: 2}
+  - {fileID: 11400000, guid: f04bba1cdb5b8224898d683109c32dd3, type: 2}
+  - {fileID: 11400000, guid: 46c7239808f969e4c9592068d533b28f, type: 2}
+  - {fileID: 11400000, guid: a444897fdbaa54a4fbd65db9e7aed52a, type: 2}
   emptySpace: {x: -7, y: 3, z: 0}
 --- !u!1 &2067760979
 GameObject:

@@ -10,6 +10,8 @@ public class Cell : MonoBehaviour
     public Figure figure;// private set
     public bool isActive;
 
+    public event WinDelegate OnWin;
+    public delegate void WinDelegate();
     public void SetCoordinates(int x,int y)
     {
         this.x = x;
@@ -17,6 +19,10 @@ public class Cell : MonoBehaviour
     }
     public void SetFigure(Figure f)
     {
+        if(f.team == -1 * team)
+        {
+            OnWin();
+        }
         if (figure == null)
         {
             figure = f;
@@ -25,6 +31,9 @@ public class Cell : MonoBehaviour
         }
         else
         {
+            if (figure.IsMaster) {
+                OnWin();
+            }
             figure.GetComponent<Figure>().OnSelected -= Cell_OnSelected;
             Destroy(figure.gameObject);
             figure = f;

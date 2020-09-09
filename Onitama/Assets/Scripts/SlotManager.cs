@@ -22,11 +22,28 @@ public class SlotManager : MonoBehaviour
             cards.RemoveAt(o);
         }
         GetComponent<TurnManager>().OnTurnEnd += SlotManager_OnTurnEnd;
-        redTeam.Add(slots[0]);
+        GetComponent<TurnManager>().OnWin += SlotManager_OnWin1;
+       redTeam.Add(slots[0]);
         redTeam.Add(slots[1]);
         redTeam.Add(slots[2]);
         blueTeam.Add(slots[3]);
         blueTeam.Add(slots[4]);
+    }
+
+    private void SlotManager_OnWin1()
+    {
+        foreach (var slot in slots)
+        {
+            slot.GetComponent<BoxCollider2D>().enabled = false;
+        }
+    }
+
+    private void SlotManager_OnWin(int teamWinner)
+    {
+        foreach (DragObj dragObj in slots)
+        {
+            dragObj.GetComponent<DragObj>().enabled = false;
+        }
     }
 
     private void SlotManager_OnTurnEnd(int t, Card c, DragObj currentSlot)
@@ -38,11 +55,15 @@ public class SlotManager : MonoBehaviour
         {
             foreach (var slot in redTeam)
             {
-                slot.GetComponent<DragObj>().enabled = false;
+                slot.GetComponent<BoxCollider2D>().enabled = false;
+                slot.GetComponent<SpriteRenderer>().color = Color.red;
+                //slot.gameObject.SetActive(false);
             }
-            foreach (var slot in redTeam)
+            foreach (var slot in blueTeam)
             {
-                slot.GetComponent<DragObj>().enabled = true;
+                slot.GetComponent<BoxCollider2D>().enabled = true;
+                slot.GetComponent<SpriteRenderer>().color = Color.white;
+                //slot.gameObject.SetActive(true);
             }
             redTeam.Remove(currentSlot);
             blueTeam.Add(currentSlot);
@@ -51,14 +72,16 @@ public class SlotManager : MonoBehaviour
         {
             foreach (var slot in redTeam)
             {
-                slot.GetComponent<DragObj>().enabled = true;
+                slot.GetComponent<BoxCollider2D>().enabled = true;
+                slot.GetComponent<SpriteRenderer>().color = Color.white;
+                //   slot.gameObject.SetActive(true);
             }
-            foreach (var slot in redTeam)
+            foreach (var slot in blueTeam)
             {
-                slot.GetComponent<DragObj>().enabled = false;
+                slot.GetComponent<BoxCollider2D>().enabled = false;
+                //   slot.gameObject.SetActive(false);
+                slot.GetComponent<SpriteRenderer>().color = Color.red;
             }
-            redTeam.Remove(currentSlot);
-            blueTeam.Add(currentSlot);
             redTeam.Add(currentSlot);
             blueTeam.Remove(currentSlot);
         }

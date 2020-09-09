@@ -18,6 +18,7 @@ public class DragObj : MonoBehaviour
     public void WasUsed(Vector3 pos)
     {
         transform.position = pos;
+        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
         GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
         team *= -1;
     }
@@ -65,7 +66,6 @@ public class DragObj : MonoBehaviour
     IEnumerator CardMoveBack()
     {
         yield return new WaitForSeconds(0.1f);
-        Debug.Log(startPos.x + "  " + startPos.y + "  " + startPos.z);
         transform.position = startPos;
     }
     public void OnMouseUp()
