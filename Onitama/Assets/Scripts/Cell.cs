@@ -11,7 +11,7 @@ public class Cell : MonoBehaviour
     public bool isActive;
 
     public event WinDelegate OnWin;
-    public delegate void WinDelegate();
+    public delegate void WinDelegate(int t);
     public void SetCoordinates(int x,int y)
     {
         this.x = x;
@@ -21,7 +21,7 @@ public class Cell : MonoBehaviour
     {
         if(f.team == -1 * team)
         {
-            OnWin();
+            OnWin(f.team);
         }
         if (figure == null)
         {
@@ -32,7 +32,7 @@ public class Cell : MonoBehaviour
         else
         {
             if (figure.IsMaster) {
-                OnWin();
+                OnWin(figure.team*(-1));
             }
             figure.GetComponent<Figure>().OnSelected -= Cell_OnSelected;
             Destroy(figure.gameObject);

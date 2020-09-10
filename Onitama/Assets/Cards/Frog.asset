@@ -16,5 +16,5 @@ MonoBehaviour:
   - -2 0
   - -1 1
   - 1 -1
-  sprite: {fileID: 21300000, guid: 5d6f26e9429189840a0e7de473082686, type: 3}
+  sprite: {fileID: 21300000, guid: 108fea77b7792af4dab6f7e9f7f0fe6c, type: 3}
   isActive: 0

@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleField : MonoBehaviour
 {
+    [SerializeField]
+    Button restartButton;
     public Cell[,] Cells;
     [SerializeField]
     Sprite s1;
@@ -11,6 +14,10 @@ public class BattleField : MonoBehaviour
     Cell cell;
     private void Awake()
     {
+
+        restartButton.enabled = false;
+        restartButton.gameObject.SetActive(false);
+
         Cells = new Cell[5, 5];
 
         for (int i = 0; i < 5; i++)
@@ -34,10 +41,15 @@ public class BattleField : MonoBehaviour
                 }
                 newCell.GetComponent<Cell>().SetCoordinates(i, j);
                 newCell.gameObject.layer = 10;
-
+                newCell.OnWin += NewCell_OnWin;
             }
         }
     }
 
-
+    private void NewCell_OnWin(int team)
+    {
+        restartButton.enabled = true;
+        restartButton.gameObject.SetActive(true);
+        restartButton.transform.GetChild(0).GetComponent<Text>().text = (team == 1) ? "RED WON\nClick to restart" : "BLUE WON\nClick to restart";
+    }
 }

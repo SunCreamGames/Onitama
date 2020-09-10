@@ -40,7 +40,7 @@ public class TurnManager : MonoBehaviour
             }
         }
     }
-    private void TurnManager_OnWin()
+    private void TurnManager_OnWin(int t)
     {
         for (int i = 0; i < field.Cells.GetLength(0); i++)
         {

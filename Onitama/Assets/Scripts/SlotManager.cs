@@ -28,6 +28,13 @@ public class SlotManager : MonoBehaviour
         redTeam.Add(slots[2]);
         blueTeam.Add(slots[3]);
         blueTeam.Add(slots[4]);
+
+        slots[2].GetComponent<BoxCollider2D>().enabled = false;
+        slots[2].GetComponent<SpriteRenderer>().color = Color.gray;
+        slots[3].GetComponent<BoxCollider2D>().enabled = false;
+        slots[3].GetComponent<SpriteRenderer>().color = Color.gray;
+        slots[4].GetComponent<BoxCollider2D>().enabled = false;
+        slots[4].GetComponent<SpriteRenderer>().color = Color.gray;
     }
 
     private void SlotManager_OnWin1()
@@ -56,7 +63,7 @@ public class SlotManager : MonoBehaviour
             foreach (var slot in redTeam)
             {
                 slot.GetComponent<BoxCollider2D>().enabled = false;
-                slot.GetComponent<SpriteRenderer>().color = Color.red;
+                slot.GetComponent<SpriteRenderer>().color = Color.gray;
                 //slot.gameObject.SetActive(false);
             }
             foreach (var slot in blueTeam)
@@ -80,7 +87,7 @@ public class SlotManager : MonoBehaviour
             {
                 slot.GetComponent<BoxCollider2D>().enabled = false;
                 //   slot.gameObject.SetActive(false);
-                slot.GetComponent<SpriteRenderer>().color = Color.red;
+                slot.GetComponent<SpriteRenderer>().color = Color.gray;
             }
             redTeam.Add(currentSlot);
             blueTeam.Remove(currentSlot);
